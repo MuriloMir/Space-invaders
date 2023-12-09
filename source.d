@@ -90,13 +90,13 @@ void main()
                     if (alienRect.contains(superShotRect.center()))
                         aliens[i].life = 0;
                 }
-				// here we check each primary fire you've shot to see if it hit an alien, in which case it must disappear, for that we must shorten the array of
-				// shots positions and it does so by abandoning the last element, hence we are iterating in reverse, to start from the last
+		// here we check each primary fire you've shot to see if it hit an alien, in which case it must disappear, for that we must shorten the array of
+		// shots positions and it does so by abandoning the last element, hence we are iterating in reverse, to start from the last
                 foreach_reverse (shotPos; shotsPositions)
                 {
                     // we create a rectangle around the shot
                     Rectangle shotRect = Rectangle(shotPos, Size(primFire.width(), primFire.height()));
-					// if it totally enters the rectangle of the alien then it disappears (gets removed from array) and the alien's life is updated
+		    // if it totally enters the rectangle of the alien then it disappears (gets removed from array) and the alien's life is updated
                     if (alienRect.contains(shotRect))
                     {
                         shotsPositions.length--;
@@ -171,11 +171,11 @@ void main()
     string[6] imgNamesAlive = ["images/alien0alive.png", "images/alien1alive.png", "images/alien2alive.png", "images/alien3alive.png", "images/alien4alive.png",
                                "images/alien5alive.png"],
               imgNamesDead = ["images/alien0dead.png", "images/alien1dead.png", "images/alien2dead.png", "images/alien3dead.png", "images/alien4dead.png", "images/alien5dead.png"];
-	// then we get the start points of each alien (I've chose them myself arbitrarily)
+    // then we get the start points of each alien (I've chose them myself arbitrarily)
     Point[6] startPoints = [Point(100, -120), Point(600, -300), Point(200, -500), Point(800, -700), Point(250, -900), Point(400, -1750)];
-	// this variable will keep track of the alien's life
+    // this variable will keep track of the alien's life
     int life;
-	// now we will create each of the 6 aliens, one at a time
+    // now we will create each of the 6 aliens, one at a time
     foreach (i; 0 .. 6)
     {
         // first we load the memory image and turn it into a sprite
