@@ -12,10 +12,13 @@ pragma(linkerDirective, "/entry:mainCRTStartup");
 // a struct to represent each alien
 struct Alien
 {
-    // it contains the alien's life, position, the costumes of its sprite and a boolean to know if it has been destroyed
+    // this is the alien's life
     int life;
+    // this is the alien's position
     Point position;
+    // these will be the costumes of the alien when it is alive and when it is dead
     Sprite alive, dead;
+    // this boolean will tell if the alien has been destroyed
     bool destroyed;
 }
 
@@ -94,7 +97,7 @@ void main()
         {
             // draw the background, it's a very big image
             painter.drawImage(Point(0, backgroundHeight), background);
-    
+
             // start a loop to draw all shots (primary fire)
             foreach (i; 0 .. shotsPositions.length)
             {
@@ -103,7 +106,7 @@ void main()
                 // update the fire's position for the next iteration (taking into account the player's speed)
                 shotsPositions[i].y -= 15 + movingSpeed;
             }
-    
+
             // if you have fired the super shot and it still hasn't gone over the window's edge
             if (superShotFired && superShotPosition.y + superFire.height() > 0)
             {
@@ -112,7 +115,7 @@ void main()
                 // update it's position
                 superShotPosition.y -= (15 + movingSpeed);
             }
-    
+
             // start a loop to draw each alien on the window
             foreach (i; 0 .. 6)
             {
@@ -125,17 +128,17 @@ void main()
                 {
                     // draw it with the living costume
                     aliens[i].alive.drawAt(painter, aliens[i].position);
-    
+
                     // if it's still alive and it has totally passed by your ship
                     if (aliens[i].position.y > 400)
                         // set this boolean to true, you lose the game
                         lost = true;
                 }
-    
+
                 // update the alien's position based on your current speed (your speed changes when you use the turbo)
                 aliens[i].position.y += movingSpeed;
             }
-    
+
             // draw your ship
             ship.drawAt(painter, shipPosition);
         }
@@ -160,29 +163,29 @@ void main()
                     {
                         // define a rectangle around the alien and one around your ship, because the computer only understands rectangles
                         alienRect = Rectangle(aliens[i].position.x, aliens[i].position.y, aliens[i].position.x + aliens[i].alive.width(),
-                                              aliens[i].position.y + aliens[i].alive.height()),
+                                              aliens[i].position.y + aliens[i].alive.height());
                         shipRect = Rectangle(shipPosition.x, shipPosition.y, shipPosition.x + ship.width(), shipPosition.y + ship.height());
-        
+
                         // if you've used the super shot
                         if (superShotFired)
                         {
                             // define a rectangle around the super shot
                             superShotRect = Rectangle(superShotPosition.x, superShotPosition.y, shipPosition.x + superFire.width(),
                                                       shipPosition.y + superFire.height());
-        
+
                             // if the center of the super shot is inside the alien's rectangle then it deeply intersects it
                             if (alienRect.contains(superShotRect.center()))
                                 // set the alien's life to 0, the alien dies
                                 aliens[i].life = 0;
                         }
-        
-        				// start a loop to check all shots, starting from the last one
+
+                        // start a loop to check all shots, starting from the last one
                         foreach_reverse (shotPos; shotsPositions)
                         {
                             // define a rectangle around the shot
                             shotRect = Rectangle(shotPos.x, shotPos.y, shotPos.x + primFire.width(), shotPos.y + primFire.height());
-        
-        					// if it totally enters the rectangle of the alien
+
+                            // if it totally enters the rectangle of the alien
                             if (alienRect.contains(shotRect))
                             {
                                  // remove it from the array (hence the reverse loop starting from the last one)
@@ -191,13 +194,13 @@ void main()
                                 aliens[i].life--;
                             }
                         }
-        
+
                         // if your ship touches an alien
                         if (alienRect.overlaps(shipRect))
                             // update this boolean, you lose the game
                             lost = true;
                     }
-        
+
                     // if the alien's life reaches 0
                     if (!aliens[i].destroyed && aliens[i].life <= 0)
                     {
@@ -227,12 +230,12 @@ void main()
                 {
                     // add the new shot to the array of shots
                     shotsPositions ~= Point(event.x, event.y);
-    
+
                     // if you already have the double shot upgrade
                     if (upgradeEarned)
                         // add another shot to the array
                         shotsPositions ~= Point(event.x + 30, event.y);
-    
+
                     // play the sound of shooting
                     music.playOgg("sounds/shoot sound.ogg");
                 }
@@ -269,7 +272,7 @@ void main()
             // if you've released the Space key
             else
             {
-				// set the speed back to normal
+                // set the speed back to normal
                 movingSpeed = 1;
                 // set the costume back to normal
                 ship = shipNormal;
