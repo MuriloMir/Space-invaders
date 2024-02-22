@@ -1,4 +1,4 @@
-// This software is a space invaders game. 
+// This software is a space invaders game.
 
 import arsd.image: loadImageFromFile;
 import arsd.simpleaudio : AudioOutputThread;
