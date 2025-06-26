@@ -1,5 +1,6 @@
 // This software is a space invaders game.
 
+// import the tools we need
 import arsd.image: loadImageFromFile;
 import arsd.simpleaudio : AudioOutputThread;
 import arsd.simpledisplay : Image, Key, KeyEvent, MemoryImage, MouseButton, MouseEvent, MouseEventType, Point, Rectangle, ScreenPainter, SimpleWindow,
@@ -41,7 +42,7 @@ void main()
            primFire = new Sprite(window, Image.fromMemoryImage(memPrimFire, true)),
            superFire = new Sprite(window, Image.fromMemoryImage(memSuperFire, true)), ship = shipNormal;
     // create the booleans to keep track of the current state of the player and the game
-    bool superShotFired, upgradeEarned, won, lost;
+    bool superShotFired, superShotOver, upgradeEarned, won, lost;
     // 'backgroundHeight' controls the position of the background, which rolls down as you play, and 'movingSpeed' controls the speed of the ship
     int backgroundHeight = -2400, movingSpeed = 1;
     // 'shipPosition' will keep track of the ship's position and 'superShotPosition' will keep track of the super shot position (in case you fire it)
@@ -108,12 +109,17 @@ void main()
             }
 
             // if you have fired the super shot and it still hasn't gone over the window's edge
-            if (superShotFired && superShotPosition.y + superFire.height() > 0)
+            if (superShotFired && !superShotOver)
             {
                 // draw the super shot
                 superFire.drawAt(painter, superShotPosition);
                 // update it's position
                 superShotPosition.y -= (15 + movingSpeed);
+                // update the rectangle around it
+                superShotRect = Rectangle(superShotPosition.x, superShotPosition.y, superShotPosition.x + superFire.width(),
+                                          superShotPosition.y + superFire.height());
+                // check if it has already disappeared from the window, in which case you set this boolean to true
+                superShotOver = superShotPosition.y + superFire.height() < 0;
             }
 
             // start a loop to draw each alien on the window
@@ -166,18 +172,12 @@ void main()
                                               aliens[i].position.y + aliens[i].alive.height());
                         shipRect = Rectangle(shipPosition.x, shipPosition.y, shipPosition.x + ship.width(), shipPosition.y + ship.height());
 
-                        // if you've used the super shot
-                        if (superShotFired)
-                        {
-                            // define a rectangle around the super shot
-                            superShotRect = Rectangle(superShotPosition.x, superShotPosition.y, shipPosition.x + superFire.width(),
-                                                      shipPosition.y + superFire.height());
-
+                        // if you've used the super shot and it still hasn't disappeared from the window
+                        if (superShotFired && !superShotOver)
                             // if the center of the super shot is inside the alien's rectangle then it deeply intersects it
                             if (alienRect.contains(superShotRect.center()))
                                 // set the alien's life to 0, the alien dies
                                 aliens[i].life = 0;
-                        }
 
                         // start a loop to check all shots, starting from the last one
                         foreach_reverse (shotPos; shotsPositions)
