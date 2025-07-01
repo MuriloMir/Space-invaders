@@ -6,9 +6,13 @@ import arsd.simpleaudio : AudioOutputThread;
 import arsd.simpledisplay : Image, Key, KeyEvent, MemoryImage, MouseButton, MouseEvent, MouseEventType, Point, Rectangle, ScreenPainter, SimpleWindow,
                             Sprite;
 
-// make sure the terminal will not pop up
-pragma(linkerDirective, "/subsystem:windows");
-pragma(linkerDirective, "/entry:mainCRTStartup");
+// in case you are on Windows
+version (Windows)
+{
+    // these 2 lines will simply stop the terminal from popping-up
+    pragma(linkerDirective, "/subsystem:windows");
+    pragma(linkerDirective, "/entry:mainCRTStartup");
+}
 
 // a struct to represent each alien
 struct Alien
@@ -23,6 +27,7 @@ struct Alien
     bool destroyed;
 }
 
+// start the software
 void main()
 {
     // create the GUI window
