@@ -1,10 +1,10 @@
 // This software is a space invaders game.
 
 // import the tools we need
-import arsd.image: loadImageFromFile;
-import arsd.simpleaudio : AudioOutputThread;
-import arsd.simpledisplay : Image, Key, KeyEvent, MemoryImage, MouseButton, MouseEvent, MouseEventType, Point, Rectangle, ScreenPainter, SimpleWindow,
+import multimedia.audio : AudioOutputThread;
+import multimedia.display : Image, Key, KeyEvent, MemoryImage, MouseButton, MouseEvent, MouseEventType, Point, Rectangle, ScreenPainter, SimpleWindow,
                             Sprite;
+import multimedia.image: loadImageFromFile;
 
 // in case you are on Windows
 version (Windows)
